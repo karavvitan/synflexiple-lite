@@ -1,4 +1,4 @@
-This a simple yet flexible, single `.html` app for playing music based on customizable scales.
+This a simple yet flexible, visually unique and intuitive, single `.html` app for playing music based on customizable scale presets.
 This is very good for education, casual playing, and for beginners.
 
 This is a more developed fork of `simflex` variant of my `Sincrediple`.
