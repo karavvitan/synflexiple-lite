@@ -6,4 +6,4 @@ Look at [Sincrediple](https://github.com/karavvitan/Sincrediple) repository for 
 
 [Try it!](https://karavvitan.github.io/synflexiple/index.html)
 
-The code is in `/docs` folder (named so for easy gh-pages publishing).
+The code is in `/docs` folder (named so for easy gh-pages deploying).
