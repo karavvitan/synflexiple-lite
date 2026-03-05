@@ -22,7 +22,7 @@
       pointer-events: none; z-index: 0; transform: translateY(0px);
     }
     .octave-row {
-      flex: none; height: 120px; display: flex; border-top: solid 1px; border-bottom: solid 1px;
+      flex: none; display: flex; border-top: solid 1px; border-bottom: solid 1px; height: var(--rowHeight);
     }
     .note-zone {
       flex: 1; display: flex; align-items: center; justify-content: center;
@@ -56,6 +56,7 @@
     const numOctaves = 6;
     const baseOctave = -1;
     const rowHeight = 120;
+    document.documentElement.style.setProperty("--rowHeight", rowHeight + "px");
 
     const container = document.getElementById("padContainer");
     const scaleSelect = document.getElementById("scaleSelect");
