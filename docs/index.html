@@ -10,7 +10,7 @@
     body { display: flex; }
     #scrollbarZone { width: 60px; background: #222; overflow-y: scroll; }
     #scrollbarZone > div { width: 1px; }
-    #scaleButtonContainer {
+    #bottomOptions {
       position: absolute; bottom: 10px; left: 40px; z-index: 10;
     }
     #scaleSelect { font-size: 0.9em; padding: 2px; }
@@ -170,6 +170,7 @@
     }
 
     .settings-dialog {
+      z-index: 20;
       margin: 0;
       padding: 0;
       border: none;
@@ -182,12 +183,70 @@
 </head>
 <body>
   <div id="scrollbarZone"></div>
-  <div id="scaleButtonContainer">
+  <div id="bottomOptions">
     <select id="scaleSelect">
       <option value="minor">Minor</option>
       <option value="minorRatio">Minor Ratio</option>
     </select>
+    <button onclick="settingsDialog.show()">⚙️</button>
   </div>
+    <dialog class="settings-dialog" closedby="closerequest">
+    <div class="settings">
+      <button onclick="settingsDialog.close()" class="btn-close">❌</button>
+      <div class="settings-header">
+        <h2 class="settings-heading">Settings<hr></h2>
+        <div class="settings-header-buttons">
+          <button>Save all as JSON</button>
+          <button>Load all from JSON</button>
+        </div>
+      </div>
+      <div class="a_setting">
+        <div class="setting-header">
+          <h4 class="setting-name">scalePresets</h4>
+          <button>Save as JSON</button>
+          <button>Load from JSON</button>
+        </div>
+        <div class="setting-contents">
+          <div class="setting-content">
+            <label class="scaleDisplayName">
+              Display Name of the scale:
+              <input type="text">
+            </label>
+            <label class="scaleId">
+              JavaScript identifier of the scale:
+              <input type="text">
+            </label>
+            <button class="setting-content-delete">Delete</button>
+          </div>
+          <button>➕</button>
+          <button>Reset</button>
+        </div>
+      </div>
+
+      <div class="a_setting">
+        <div class="setting-header">
+          <h4 class="setting-name">Base Settings</h4>
+          <button>Save as JSON</button>
+          <button>Load from JSON</button>
+        </div>
+        <div class="setting-contents">
+          <div class="setting-content">
+            <label>
+              baseFrequency:
+              <input type="text" id="baseFrequencyInput">
+            </label>
+            <label>
+              baseOctave:
+              <input type="text" id="baseOctaveInput">
+            <label>
+              numOctaves:
+              <input type="text" id="numOctavesInput">
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </dialog>
 
   <div id="padContainer"></div>
 
@@ -197,15 +256,16 @@
       minorRatio: [0, [1/1, 9/8, 6/5, 4/3, 3/2, 8/5, 9/5]],
     };
 
-    const baseFreq = 261.63;
-    const numOctaves = 6;
-    const baseOctave = -1;
-    const rowHeight = 120;
+    let baseFreq = 261.63;
+    let baseOctave = -1;
+    let numOctaves = 4;
+    let rowHeight = 120;
     document.documentElement.style.setProperty("--rowHeight", rowHeight + "px");
 
     const container = document.getElementById("padContainer");
     const scaleSelect = document.getElementById("scaleSelect");
     const scrollbarZone = document.getElementById("scrollbarZone");
+    const settingsDialog = document.querySelector(".settings-dialog");
 
     function getFreqFromXY(x, y, width, height, ET, scale, minOct, maxOct) {
       const octaveHeight = height / (maxOct - minOct + 1);
