@@ -232,15 +232,6 @@
           <button>Load all from JSON</button>
         </div>
       </div>
-      <div class="a_setting">
-        <div class="setting-header">
-          <h4 class="setting-name">scalePresets</h4>
-          <button>Save as JSON</button>
-          <button>Load from JSON</button>
-        </div>
-        <div class="setting-contents" id="scalePresetsInputs">
-        </div>
-      </div>
 
       <div class="a_setting">
         <div class="setting-header">
@@ -251,17 +242,27 @@
         <div class="setting-contents">
           <div class="setting-content">
             <label>
-              baseFrequency:
-              <input type="text" id="baseFrequencyInput">
+              Base frequency:
+              <input type="text" id="baseFreqInput">
             </label>
             <label>
-              baseOctave:
+              Base octave:
               <input type="text" id="baseOctaveInput">
             <label>
-              numOctaves:
+              Number of octaves:
               <input type="text" id="numOctavesInput">
             </label>
           </div>
+        </div>
+      </div>
+
+      <div class="a_setting">
+        <div class="setting-header">
+          <h4 class="setting-name">scalePresets</h4>
+          <button>Save as JSON</button>
+          <button>Load from JSON</button>
+        </div>
+        <div class="setting-contents" id="scalePresetsInputs">
         </div>
       </div>
     </div>
@@ -284,7 +285,6 @@
     const container = document.getElementById("padContainer");
     const scaleSelect = document.getElementById("scaleSelect");
     const scrollbarZone = document.getElementById("scrollbarZone");
-    const settingsDialog = document.getElementById("settings-dialog");
 
     function getFreqFromXY(x, y, width, height, ET, scale, minOct, maxOct) {
       const octaveHeight = height / (maxOct - minOct + 1);
@@ -444,12 +444,19 @@
     renderPad("Minor");
 
     // SETTINGS [
+    const settingsDialog = document.getElementById("settings-dialog");
+    const baseFreqInput = document.getElementById("baseFreqInput");
+    const baseOctaveInput = document.getElementById("baseOctaveInput");
+    const numOctavesInput = document.getElementById("numOctavesInput");
     const scalePresetsInputs = document.getElementById("scalePresetsInputs");
 
     function settingsShow() {
       settingsDialog.showModal();
-      scalePresetsInputs.innerHTML = "";
+      baseFreqInput.value = baseFreq;
+      baseOctaveInput.value = baseOctave;
+      numOctavesInput.value = numOctaves;
 
+      scalePresetsInputs.innerHTML = "";
       for (const option of scaleSelect.options) {
         const settingContent = document.createElement("div");
         settingContent.className = "setting-content";
