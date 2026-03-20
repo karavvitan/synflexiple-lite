@@ -475,7 +475,9 @@
       numOctavesInput.value = numOctaves;
 
       scalePresetsInputs.innerHTML = "";
-      for (const [index, option] of scaleSelect.options.entries()) {
+      for (let i = 0; i < scaleSelect.options.length; i++){
+        const option = scaleSelect.options[i];
+
         const settingContent = document.createElement("div");
         settingContent.className = "setting-content";
 
