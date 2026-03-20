@@ -214,8 +214,6 @@
   <div id="scrollbarZone"></div>
   <div id="bottomOptions">
     <select id="scaleSelect">
-      <option value="Minor">Minor</option>
-      <option value="Minor_Ratio">Minor Ratio</option>
     </select>
     <button id="settingsDialogShow">
       ⚙️
@@ -275,8 +273,13 @@
 
   <script>
     const scalePresets = {
-      Minor: [12, [0, 2, 3, 5, 7, 8, 10]],
-      Minor_Ratio: [0, [1/1, 9/8, 6/5, 4/3, 3/2, 8/5, 9/5]],
+      Minor: {
+        tones: [0, 2, 3, 5, 7, 8, 10],
+      },
+      Minor_Ratio: {
+        tones: [1/1, 9/8, 6/5, 4/3, 3/2, 8/5, 9/5], notation: 0,
+        displayName: "Minor Ratio",
+      },
     };
 
     let baseFreq = 261.63;
@@ -297,7 +300,7 @@
 
       const index = Math.floor(x / width * scale.length);
       const safeIndex = Math.max(0, Math.min(index, scale.length - 1));
-      const ratio = ET === 0 ? scale[safeIndex] : Math.pow(2, scale[safeIndex] / ET);
+      const ratio = (ET === 0 || ET === "r" || ET === "ratio") ? scale[safeIndex] : Math.pow(2, scale[safeIndex] / ET);
       const freq = baseFreq * ratio * Math.pow(2, octaveIndex);
       return { freq: freq, volume: yVolume };
     }
@@ -330,8 +333,9 @@
     }
 
     function renderPad(scaleName) {
-      const ET = scalePresets[scaleName][0];
-      const scale = scalePresets[scaleName][1];
+      const ET = scalePresets[scaleName].notation || 12;
+      const scale = scalePresets[scaleName].tones;
+      console.log(ET, scale);
       container.innerHTML = "";
 
       const pad = document.createElement("div");
@@ -347,7 +351,7 @@
           const note = document.createElement("div");
           note.className = "note-zone";
           const tone = scale[i];
-          const hue = ET === 0 ? tone * 360 : (tone / ET) * 360;
+          const hue = (ET === 0 || ET === "r" || ET === "ratio") ? tone * 360 : (tone / ET) * 360;
           note.style.backgroundColor = `hsl(${hue}, 70%, 55%)`;
           note.textContent = +tone.toFixed(3);
           octaveRow.appendChild(note);
@@ -444,7 +448,17 @@
       renderPad(scaleSelect.value);
     });
 
-    renderPad("Minor");
+    function scaleOptionsGenerate() {
+      for (const [key, value] of Object.entries(scalePresets)) {
+        const option = document.createElement("option");
+        option.value = key;
+        option.textContent = value.displayName || key;
+        scaleSelect.append(option);
+      }
+    }
+
+    scaleOptionsGenerate();
+    renderPad(scaleSelect.options[0].value);
 
     /// SETTINGS [
 
@@ -464,7 +478,7 @@
 
     // Dialog show/close buttons [
     settingsDialogShow.addEventListener("click", () => {
-      settingsShow();
+      settingsDialog.showModal();
     });
 
     settingsDialogClose.addEventListener("click", () => {
@@ -472,44 +486,40 @@
     });
     // ]
 
-    function settingsShow() {
-      settingsDialog.showModal();
+    baseFreqInput.value = baseFreq;
+    baseOctaveInput.value = baseOctave;
+    numOctavesInput.value = numOctaves;
 
-      baseFreqInput.value = baseFreq;
-      baseOctaveInput.value = baseOctave;
-      numOctavesInput.value = numOctaves;
+    for (const [key, value] of Object.entries(scalePresets)) {
+      const settingContent = document.createElement("div");
+      settingContent.className = "setting-content";
 
-      document.querySelectorAll("#scalePresetsInputs > .setting-content").forEach((elm) => {
-        elm.remove();
-      });
+      const sDN = document.createElement("label");
+      const sDNInput = document.createElement("input");
+      sDNInput.value = value.displayName || key;
+      sDN.append("Display Name of the Scale:", sDNInput);
 
-      for (let i = 0; i < scaleSelect.options.length; i++){
-        const option = scaleSelect.options[i];
+      const sID = document.createElement("label");
+      const sIDInput = document.createElement("input");
+      sIDInput.value = key;
+      sID.append("JavaScript identifier for the scale:", sIDInput);
 
-        const settingContent = document.createElement("div");
-        settingContent.className = "setting-content";
+      const tones = document.createElement("label");
+      const tonesInput = document.createElement("input");
+      tonesInput.value = value.tones;
+      tones.append("The tones list:", tonesInput);
 
-        const sDN = document.createElement("label");
-        sDNInput = document.createElement("input");
-        sDNInput.value = option.text;
-        sDN.append("Display Name of the Scale:", sDNInput);
+      const notation = document.createElement("label");
+      const notationInput = document.createElement("input");
+      notationInput.value = value.notation || 12;
+      notation.append("The notation basis:", notationInput);
 
-        const sID = document.createElement("label");
-        sIDInput = document.createElement("input");
-        sIDInput.value = option.value;
-        sID.append("JavaScript identifier for the scale:", sIDInput);
+      const deleteBtn = document.createElement("button");
+      deleteBtn.className = "setting-content-delete";
+      deleteBtn.textContent = "Delete";
 
-        settingContent.append(sDN, sID);
-        settingContent.insertAdjacentHTML("beforeend", `
-          <button class='setting-content-delete'>
-            Delete
-          </button>
-        `);
-        scalePresetsAdd.after(settingContent);
-      }
-
-      scalePresetsInputs.insertAdjacentHTML("beforeend", `
-      `);
+      settingContent.append(sDN, sID, tones, notation, deleteBtn);
+      scalePresetsAdd.after(settingContent);
     }
     /// ]
   </script>
