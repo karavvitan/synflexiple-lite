@@ -475,9 +475,10 @@
       numOctavesInput.value = numOctaves;
 
       scalePresetsInputs.innerHTML = "";
-      for (const option of scaleSelect.options) {
+      for (const [index, option] of scaleSelect.options.entries()) {
         const settingContent = document.createElement("div");
         settingContent.className = "setting-content";
+
         const sDN = document.createElement("label");
         sDNInput = document.createElement("input");
         sDNInput.value = option.text;
@@ -489,11 +490,18 @@
         sID.append("JavaScript identifier for the scale:", sIDInput);
 
         settingContent.append(sDN, sID);
-        settingContent.insertAdjacentHTML("beforeend", "<button class='setting-content-delete'>Delete</button>");
+        settingContent.insertAdjacentHTML("beforeend", `
+          <button class='setting-content-delete'>
+            Delete
+          </button>
+        `);
         scalePresetsInputs.append(settingContent);
       }
 
-      scalePresetsInputs.insertAdjacentHTML("beforeend", "<button>➕</button><button>Reset</button>");
+      scalePresetsInputs.insertAdjacentHTML("beforeend", `
+        <button>➕</button>
+        <button>Reset</button>
+      `);
     }
     /// ]
   </script>
