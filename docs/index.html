@@ -200,7 +200,7 @@
       border: none;
       width: 50%;
     }
-    #settings-dialog-close {
+    #settingsDialogClose {
       width: 2rem;
       padding: 0.25rem;
       position: fixed;
@@ -217,10 +217,14 @@
       <option value="Minor">Minor</option>
       <option value="Minor_Ratio">Minor Ratio</option>
     </select>
-    <button onclick="settingsShow();">⚙️</button>
+    <button id="settingsDialogShow">
+      ⚙️
+    </button>
   </div>
   <dialog id="settings-dialog" closedby="any">
-    <button onclick="settingsDialog.close();" id="settings-dialog-close">Done</button>
+    <button id="settingsDialogClose">
+      💾
+    </button>
     <div id="settings">
       <div id="settings-header">
         <h2 id="settings-heading">Settings<hr></h2>
@@ -440,12 +444,29 @@
 
     renderPad("Minor");
 
-    // SETTINGS [
+    /// SETTINGS [
+
+    // Get elements [
     const settingsDialog = document.getElementById("settings-dialog");
+    const settingsDialogShow = document.getElementById("settingsDialogShow");
+    const settingsDialogClose = document.getElementById("settingsDialogClose");
+
     const baseFreqInput = document.getElementById("baseFreqInput");
     const baseOctaveInput = document.getElementById("baseOctaveInput");
     const numOctavesInput = document.getElementById("numOctavesInput");
+
     const scalePresetsInputs = document.getElementById("scalePresetsInputs");
+    // ]
+
+    // Dialog show/close buttons [
+    settingsDialogShow.addEventListener("click", () => {
+      settingsShow();
+    });
+
+    settingsDialogClose.addEventListener("click", () => {
+      settingsDialog.close();
+    });
+    // ]
 
     function settingsShow() {
       settingsDialog.showModal();
@@ -474,7 +495,7 @@
 
       scalePresetsInputs.insertAdjacentHTML("beforeend", "<button>➕</button><button>Reset</button>");
     }
-    // ]
+    /// ]
   </script>
 </body>
 </html>
