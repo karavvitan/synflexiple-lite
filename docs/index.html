@@ -261,7 +261,7 @@
           <button>Save as JSON</button>
           <button>Load from JSON</button>
         </div>
-        <div class="setting-contents" id="scalePresetsInputs">
+        <div class="setting-contents">
           <button id="scalePresetsReset">Reset</button>
           <button id="scalePresetsAdd">➕</button>
         </div>
@@ -333,7 +333,7 @@
     }
 
     function renderPad(scaleName) {
-      const ET = scalePresets[scaleName].notation || 12;
+      const ET = (scalePresets[scaleName].notation !== undefined) ? scalePresets[scaleName].notation : 12;
       const scale = scalePresets[scaleName].tones;
       console.log(ET, scale);
       container.innerHTML = "";
@@ -471,7 +471,6 @@
     const baseOctaveInput = document.getElementById("baseOctaveInput");
     const numOctavesInput = document.getElementById("numOctavesInput");
 
-    const scalePresetsInputs = document.getElementById("scalePresetsInputs");
     const scalePresetsReset = document.getElementById("scalePresetsReset");
     const scalePresetsAdd = document.getElementById("scalePresetsAdd");
     // ]
@@ -490,36 +489,50 @@
     baseOctaveInput.value = baseOctave;
     numOctavesInput.value = numOctaves;
 
-    for (const [key, value] of Object.entries(scalePresets)) {
-      const settingContent = document.createElement("div");
-      settingContent.className = "setting-content";
+    function scalePresetsInputsGenerate(sDNValue = "", sIDValue = "", tonesValue = "", notationValue = "") {
+      const scalePresetsInputs = document.createElement("div");
+      scalePresetsInputs.className = "setting-content";
 
       const sDN = document.createElement("label");
       const sDNInput = document.createElement("input");
-      sDNInput.value = value.displayName || key;
+      sDNInput.value = sDNValue;
       sDN.append("Display Name of the Scale:", sDNInput);
 
       const sID = document.createElement("label");
       const sIDInput = document.createElement("input");
-      sIDInput.value = key;
+      sIDInput.value = sIDValue;
       sID.append("JavaScript identifier for the scale:", sIDInput);
 
       const tones = document.createElement("label");
       const tonesInput = document.createElement("input");
-      tonesInput.value = value.tones;
+      tonesInput.value = tonesValue;
       tones.append("The tones list:", tonesInput);
 
       const notation = document.createElement("label");
       const notationInput = document.createElement("input");
-      notationInput.value = value.notation || 12;
+      notationInput.value = notationValue;
       notation.append("The notation basis:", notationInput);
 
       const deleteBtn = document.createElement("button");
       deleteBtn.className = "setting-content-delete";
       deleteBtn.textContent = "Delete";
 
-      settingContent.append(sDN, sID, tones, notation, deleteBtn);
-      scalePresetsAdd.after(settingContent);
+      scalePresetsInputs.append(sDN, sID, tones, notation, deleteBtn);
+      scalePresetsAdd.after(scalePresetsInputs);
+
+      scalePresetsInputs.addEventListener("change", (e) => {
+        const inp = e.target;
+        console.log(inp === notationInput);
+      });
+    }
+
+    for (const [key, value] of Object.entries(scalePresets)) {
+      scalePresetsInputsGenerate(
+        sDNValue = value.displayName || key,
+        sIDValue = key,
+        tonesValue = value.tones,
+        notationValue = (value.notation !== undefined) ? value.notation : 12,
+      );
     }
     /// ]
   </script>
