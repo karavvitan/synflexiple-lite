@@ -234,22 +234,22 @@
 
       <div class="a_setting">
         <div class="setting-header">
-          <h4 class="setting-name">Base Settings</h4>
+          <h4 class="setting-name">Basic Settings</h4>
           <button>Save as JSON</button>
           <button>Load from JSON</button>
         </div>
         <div class="setting-contents">
-          <div class="setting-content">
+          <div class="setting-content" id="basicSettingsInputs">
             <label>
               Base frequency:
-              <input type="text" id="baseFreqInput">
+              <input type="number" id="baseFreqInput">
             </label>
             <label>
               Base octave:
-              <input type="text" id="baseOctaveInput">
+              <input type="number" id="baseOctaveInput">
             <label>
               Number of octaves:
-              <input type="text" id="numOctavesInput">
+              <input type="number" id="numOctavesInput">
             </label>
           </div>
         </div>
@@ -468,6 +468,7 @@
     const settingsDialogShow = document.getElementById("settingsDialogShow");
     const settingsDialogClose = document.getElementById("settingsDialogClose");
 
+    const basicSettingsInputs = document.getElementById("basicSettingsInputs");
     const baseFreqInput = document.getElementById("baseFreqInput");
     const baseOctaveInput = document.getElementById("baseOctaveInput");
     const numOctavesInput = document.getElementById("numOctavesInput");
@@ -557,11 +558,29 @@
         notationValue = (value.notation !== undefined) ? value.notation : 12,
       );
     }
-    /// ]
+
+    // STATIC INPUTS [
+    basicSettingsInputs.addEventListener("change", (e) => {
+      const inp = e.target;
+      switch (inp) {
+        case baseFreqInput:
+          baseFreq = parseFloat(inp.value);
+          break;
+        case baseOctaveInput:
+          baseOctave = parseInt(inp.value);
+          break;
+        case numOctavesInput:
+          numOctaves = parseInt(inp.value);
+          break;
+      }
+    });
+    // ]
 
     settingsDialog.addEventListener("close", () => {
       renderPad(scaleSelect.value);
     });
+
+    /// ]
   </script>
 </body>
 </html>
