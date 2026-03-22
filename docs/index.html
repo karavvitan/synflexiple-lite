@@ -301,8 +301,8 @@
     cfg.numOctaves = parseInt(localStorage.getItem("cfg.numOctaves")) || 4;
 
     // UI
-    let rowHeight = 120;
-    document.documentElement.style.setProperty("--rowHeight", rowHeight + "px");
+    cfg.rowHeight = 120;
+    document.documentElement.style.setProperty("--rowHeight", cfg.rowHeight + "px");
     /// ]
 
     const container = document.getElementById("padContainer");
@@ -398,7 +398,7 @@
         const rect = pad.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top + scrollbarZone.scrollTop;
-        const { freq, volume } = getFreqFromXY(x, y, rect.width, rowHeight * cfg.numOctaves, ET, scale, cfg.baseOctave, cfg.baseOctave + cfg.numOctaves - 1);
+        const { freq, volume } = getFreqFromXY(x, y, rect.width, cfg.rowHeight * cfg.numOctaves, ET, scale, cfg.baseOctave, cfg.baseOctave + cfg.numOctaves - 1);
 
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
@@ -446,14 +446,14 @@
           const rect = pad.getBoundingClientRect();
           const x = e.clientX - rect.left;
           const y = e.clientY - rect.top + scrollbarZone.scrollTop;
-          const { freq, volume } = getFreqFromXY(x, y, rect.width, rowHeight * cfg.numOctaves, ET, scale, cfg.baseOctave, cfg.baseOctave + cfg.numOctaves - 1);
+          const { freq, volume } = getFreqFromXY(x, y, rect.width, cfg.rowHeight * cfg.numOctaves, ET, scale, cfg.baseOctave, cfg.baseOctave + cfg.numOctaves - 1);
           voice.osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
           voice.gain.gain.setTargetAtTime(volume, audioCtx.currentTime, 0.05);
         }
       });
     }
 
-    scrollbarZone.innerHTML = '<div style="height:' + (rowHeight * cfg.numOctaves) + 'px;"></div>';
+    scrollbarZone.innerHTML = '<div style="height:' + (cfg.rowHeight * cfg.numOctaves) + 'px;"></div>';
     scrollbarZone.addEventListener("scroll", () => {
       const scrollY = scrollbarZone.scrollTop;
       const overlay = container.querySelector(".noteOverlay");
