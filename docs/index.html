@@ -568,6 +568,13 @@
       scaleSelect.append(option);
       scalePresetsInputsGenerate();
     });
+
+    scalePresetsReset.addEventListener("click", () => {
+      const range = document.createRange();
+      range.setStartAfter(scalePresetsAdd);
+      range.setEndAfter(scalePresetsAdd.parentNode.lastChild);
+      range.deleteContents();
+    });
     // ]
 
     // STATIC INPUTS [
