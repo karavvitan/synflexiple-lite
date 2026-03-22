@@ -272,14 +272,6 @@
   <div id="padContainer"></div>
 
   <script>
-    function isTypeof(value, ...expectedTypes) {
-      const actual = Object.prototype.toString.call(value).slice(8, -1);
-      if (!expectedTypes.includes(actual)) {
-        throw new Error(`Expected ${expectedTypes.join(" | ")}, got ${actual}`);
-      }
-      return true;
-    }
-
     /// CONFIGS DEFAULTS [
     const cfg = {}; // cfg stands for "configs"
 
