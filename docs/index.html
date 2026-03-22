@@ -296,7 +296,7 @@
     };
 
     // Basics
-cfg.baseFreq = parseFloat(localStorage.getItem("cfg.baseFreq")) || 261.63;
+    cfg.baseFreq = parseFloat(localStorage.getItem("cfg.baseFreq")) || 261.63;
     let baseOctave = (!isNaN(parseInt(localStorage.getItem("baseOctave")))) ? parseInt(localStorage.getItem("baseOctave")) : -1;
     let numOctaves = parseInt(localStorage.getItem("numOctaves")) || 4;
 
