@@ -490,7 +490,8 @@
     baseOctaveInput.value = baseOctave;
     numOctavesInput.value = numOctaves;
 
-    function scalePresetsInputsGenerate(sDNValue = "", sIDValue = "", tonesValue = "", notationValue = "") {
+    // scalePresetsInputs [
+    function scalePresetsInputsGenerate(sDNValue = "New Scale", sIDValue = "New_Scale", tonesValue = "", notationValue = 12) {
       const scalePresetsInputs = document.createElement("div");
       scalePresetsInputs.className = "setting-content";
 
@@ -558,6 +559,16 @@
         notationValue = (value.notation !== undefined) ? value.notation : 12,
       );
     }
+
+    scalePresetsAdd.addEventListener("click", () => {
+      scalePresets.New_Scale = {};
+      const option = document.createElement("option");
+      option.value = "New_Scale";
+      option.textContent = "New Scale";
+      scaleSelect.append(option);
+      scalePresetsInputsGenerate();
+    });
+    // ]
 
     // STATIC INPUTS [
     basicSettingsInputs.addEventListener("change", (e) => {
