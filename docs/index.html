@@ -492,6 +492,9 @@
 
     // scalePresetsInputs [
     function scalePresetsInputsGenerate(sDNValue = "New Scale", sIDValue = "New_Scale", tonesValue = "", notationValue = 12) {
+      let sPKey = sIDValue;
+      const scaleOption = document.querySelector(`#scaleSelect > option[value=${sPKey}]`);
+
       const scalePresetsInputs = document.createElement("div");
       scalePresetsInputs.className = "setting-content";
 
@@ -518,12 +521,15 @@
       const deleteBtn = document.createElement("button");
       deleteBtn.className = "setting-content-delete";
       deleteBtn.textContent = "Delete";
+      deleteBtn.addEventListener("click", () => {
+        scalePresetsInputs.remove();
+        delete scalePresets[sPKey];
+        scaleOption.remove();
+      });
 
       scalePresetsInputs.append(sDN, sID, tones, notation, deleteBtn);
       scalePresetsAdd.after(scalePresetsInputs);
 
-      let sPKey = sIDValue;
-      const scaleOption = document.querySelector(`#scaleSelect > option[value=${sPKey}]`);
       scalePresetsInputs.addEventListener("change", (e) => {
         const inp = e.target;
         switch (inp) {
