@@ -297,7 +297,7 @@
 
     // Basics
     cfg.baseFreq = parseFloat(localStorage.getItem("cfg.baseFreq")) || 261.63;
-    let baseOctave = (!isNaN(parseInt(localStorage.getItem("baseOctave")))) ? parseInt(localStorage.getItem("baseOctave")) : -1;
+    cfg.baseOctave = (!isNaN(parseInt(localStorage.getItem("cfg.baseOctave")))) ? parseInt(localStorage.getItem("cfg.baseOctave")) : -1;
     let numOctaves = parseInt(localStorage.getItem("numOctaves")) || 4;
 
     // UI
@@ -398,7 +398,7 @@
         const rect = pad.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top + scrollbarZone.scrollTop;
-        const { freq, volume } = getFreqFromXY(x, y, rect.width, rowHeight * numOctaves, ET, scale, baseOctave, baseOctave + numOctaves - 1);
+        const { freq, volume } = getFreqFromXY(x, y, rect.width, rowHeight * numOctaves, ET, scale, cfg.baseOctave, cfg.baseOctave + numOctaves - 1);
 
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
@@ -446,7 +446,7 @@
           const rect = pad.getBoundingClientRect();
           const x = e.clientX - rect.left;
           const y = e.clientY - rect.top + scrollbarZone.scrollTop;
-          const { freq, volume } = getFreqFromXY(x, y, rect.width, rowHeight * numOctaves, ET, scale, baseOctave, baseOctave + numOctaves - 1);
+          const { freq, volume } = getFreqFromXY(x, y, rect.width, rowHeight * numOctaves, ET, scale, cfg.baseOctave, cfg.baseOctave + numOctaves - 1);
           voice.osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
           voice.gain.gain.setTargetAtTime(volume, audioCtx.currentTime, 0.05);
         }
@@ -503,7 +503,7 @@
     // ]
 
     baseFreqInput.value = cfg.baseFreq;
-    baseOctaveInput.value = baseOctave;
+    baseOctaveInput.value = cfg.baseOctave;
     numOctavesInput.value = numOctaves;
 
     // scalePresetInputs [
@@ -608,8 +608,8 @@
           localStorage.setItem("cfg.baseFreq", cfg.baseFreq);
           break;
         case baseOctaveInput:
-          baseOctave = parseInt(inp.value);
-          localStorage.setItem("baseOctave", baseOctave);
+          cfg.baseOctave = parseInt(inp.value);
+          localStorage.setItem("cfg.baseOctave", cfg.baseOctave);
           break;
         case numOctavesInput:
           numOctaves = parseInt(inp.value);
