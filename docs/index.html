@@ -280,7 +280,9 @@
       return true;
     }
 
-    const scalePresets = JSON.parse(localStorage.getItem("scalePresets")) || {
+    const cfg = {}; // cfg stands for "configs"
+
+    cfg.scalePresets = JSON.parse(localStorage.getItem("cfg.scalePresets")) || {
       Minor: {
         tones: [0, 2, 3, 5, 7, 8, 10],
       },
@@ -343,8 +345,8 @@
     }
 
     function renderPad(scaleName) {
-      const ET = (scalePresets[scaleName].notation !== undefined) ? scalePresets[scaleName].notation : 12;
-      const scale = scalePresets[scaleName].tones;
+      const ET = (cfg.scalePresets[scaleName].notation !== undefined) ? cfg.scalePresets[scaleName].notation : 12;
+      const scale = cfg.scalePresets[scaleName].tones;
       container.innerHTML = "";
 
       const pad = document.createElement("div");
@@ -458,7 +460,7 @@
     });
 
     function scaleOptionsGenerate() {
-      for (const [key, value] of Object.entries(scalePresets)) {
+      for (const [key, value] of Object.entries(cfg.scalePresets)) {
         const option = document.createElement("option");
         option.value = key;
         option.textContent = value.displayName || key;
@@ -532,7 +534,7 @@
       deleteBtn.textContent = "Delete";
       deleteBtn.addEventListener("click", () => {
         scalePresetInputs.remove();
-        delete scalePresets[sPKey];
+        delete cfg.scalePresets[sPKey];
         scaleOption.remove();
       });
 
@@ -543,30 +545,30 @@
         const inp = e.target;
         switch (inp) {
           case sDNInput:
-            scalePresets[sPKey].displayName = inp.value;
+            cfg.scalePresets[sPKey].displayName = inp.value;
             scaleOption.textContent = inp.value;
             break;
           case sIDInput:
-            scalePresets[inp.value] = scalePresets[sPKey];
-            delete scalePresets[sPKey];
+            cfg.scalePresets[inp.value] = cfg.scalePresets[sPKey];
+            delete cfg.scalePresets[sPKey];
             scaleOption.value = inp.value;
             sPKey = inp.value;
             break;
           case tonesInput:
-            scalePresets[sPKey].tones = inp.value
+            cfg.scalePresets[sPKey].tones = inp.value
               .split(",")
               .map((e) => parseFloat(e.trim()))
               .filter((e) => !isNaN(e))
             ;
             break;
           case notationInput:
-            scalePresets[sPKey].notation = inp.value;
+            cfg.scalePresets[sPKey].notation = inp.value;
             break;
         }
       });
     }
 
-    for (const [key, value] of Object.entries(scalePresets)) {
+    for (const [key, value] of Object.entries(cfg.scalePresets)) {
       scalePresetInputsGenerate(
         sDNValue = value.displayName || key,
         sIDValue = key,
@@ -576,7 +578,7 @@
     }
 
     scalePresetsAdd.addEventListener("click", () => {
-      scalePresets.New_Scale = {};
+      cfg.scalePresets.New_Scale = {};
       const option = document.createElement("option");
       option.value = "New_Scale";
       option.textContent = "New Scale";
@@ -614,7 +616,7 @@
 
     settingsDialog.addEventListener("close", () => {
       renderPad(scaleSelect.value);
-      localStorage.setItem("scalePresets", JSON.stringify(scalePresets));
+      localStorage.setItem("cfg.scalePresets", JSON.stringify(cfg.scalePresets));
     });
 
     /// ]
