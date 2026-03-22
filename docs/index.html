@@ -298,7 +298,7 @@
     // Basics
     cfg.baseFreq = parseFloat(localStorage.getItem("cfg.baseFreq")) || 261.63;
     cfg.baseOctave = (!isNaN(parseInt(localStorage.getItem("cfg.baseOctave")))) ? parseInt(localStorage.getItem("cfg.baseOctave")) : -1;
-    let numOctaves = parseInt(localStorage.getItem("numOctaves")) || 4;
+    cfg.numOctaves = parseInt(localStorage.getItem("cfg.numOctaves")) || 4;
 
     // UI
     let rowHeight = 120;
@@ -360,7 +360,7 @@
       const overlay = document.createElement("div");
       overlay.className = "noteOverlay";
 
-      for (let o = 0; o < numOctaves; o++) {
+      for (let o = 0; o < cfg.numOctaves; o++) {
         const octaveRow = document.createElement("div");
         octaveRow.className = "octave-row";
         for (let i = 0; i < scale.length; i++) {
@@ -398,7 +398,7 @@
         const rect = pad.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top + scrollbarZone.scrollTop;
-        const { freq, volume } = getFreqFromXY(x, y, rect.width, rowHeight * numOctaves, ET, scale, cfg.baseOctave, cfg.baseOctave + numOctaves - 1);
+        const { freq, volume } = getFreqFromXY(x, y, rect.width, rowHeight * cfg.numOctaves, ET, scale, cfg.baseOctave, cfg.baseOctave + cfg.numOctaves - 1);
 
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
@@ -446,14 +446,14 @@
           const rect = pad.getBoundingClientRect();
           const x = e.clientX - rect.left;
           const y = e.clientY - rect.top + scrollbarZone.scrollTop;
-          const { freq, volume } = getFreqFromXY(x, y, rect.width, rowHeight * numOctaves, ET, scale, cfg.baseOctave, cfg.baseOctave + numOctaves - 1);
+          const { freq, volume } = getFreqFromXY(x, y, rect.width, rowHeight * cfg.numOctaves, ET, scale, cfg.baseOctave, cfg.baseOctave + cfg.numOctaves - 1);
           voice.osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
           voice.gain.gain.setTargetAtTime(volume, audioCtx.currentTime, 0.05);
         }
       });
     }
 
-    scrollbarZone.innerHTML = '<div style="height:' + (rowHeight * numOctaves) + 'px;"></div>';
+    scrollbarZone.innerHTML = '<div style="height:' + (rowHeight * cfg.numOctaves) + 'px;"></div>';
     scrollbarZone.addEventListener("scroll", () => {
       const scrollY = scrollbarZone.scrollTop;
       const overlay = container.querySelector(".noteOverlay");
@@ -504,7 +504,7 @@
 
     baseFreqInput.value = cfg.baseFreq;
     baseOctaveInput.value = cfg.baseOctave;
-    numOctavesInput.value = numOctaves;
+    numOctavesInput.value = cfg.numOctaves;
 
     // scalePresetInputs [
     function scalePresetInputsGenerate(sDNValue = "New Scale", sIDValue = "New_Scale", tonesValue = "", notationValue = 12) {
@@ -612,8 +612,8 @@
           localStorage.setItem("cfg.baseOctave", cfg.baseOctave);
           break;
         case numOctavesInput:
-          numOctaves = parseInt(inp.value);
-          localStorage.setItem("numOctaves", numOctaves);
+          cfg.numOctaves = parseInt(inp.value);
+          localStorage.setItem("cfg.numOctaves", cfg.numOctaves);
           break;
       }
     });
