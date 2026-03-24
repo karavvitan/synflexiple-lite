@@ -5,7 +5,9 @@
   <title>synflexiple</title>
   <style>
     :root {
-      --color-base-300: oklch(20% 0 49.25);
+      --color-base-100: oklch(9% 0.00 90);
+      --color-base-200: oklch(15.4% 0 56.043);
+      --color-base-300: oklch(24% 0.00 90);
       --color-base-content: oklch(92% 0.003 48.717);
       --color-primary: oklch(41% 0.14 257);
       --color-secondary: oklch(34.5% 0.163 344.600);
@@ -157,15 +159,39 @@
     .setting-header {
       display: flex;
       flex-flow: row wrap;
-      gap: 0.75rem;
+      gap: 1.25rem;
       align-items: center;
       height: 3rem;
 
       & > * {
         margin: 0;
       }
-      & > button {
-        height: 2rem;
+    }
+    #settingsHeader,
+    .setting-header {
+      a, label {
+        user-select: none;
+        background-color: var(--color-base-300);
+        color: var(--color-base-content);
+        padding: 0.25rem;
+        height: min-content;
+        width: fit-content;
+        border: 2px outset;
+        border-color: var(--color-base-content);
+      }
+      a:hover,
+      label:hover {
+        background-color: var(--color-base-200);
+      }
+      a:active,
+      label:active {
+        border-style: inset;
+        background-color: var(--color-base-100);
+      }
+      input[type="file"] {
+        position: absolute;
+        width: 0;
+        height: 0;
       }
     }
 
@@ -227,16 +253,22 @@
       <div id="settingsHeader">
         <h2 id="settingsHeading">Settings<hr></h2>
         <div id="settingsHeaderButtons">
-          <button>Save all as JSON</button>
-          <button>Load all from JSON</button>
+          <a>Export all</a>
+          <div>
+            <label for="loadAllFromJson">Import all</label>
+            <input type="file" id="loadAllFromJson">
+          </div>
         </div>
       </div>
 
       <div class="a_setting">
         <div class="setting-header">
           <h4 class="setting-name">Basic Settings</h4>
-          <button>Save as JSON</button>
-          <button>Load from JSON</button>
+          <a>Export</a>
+          <div>
+            <label for="">Import</label>
+            <input type="file" id="">
+          </div>
         </div>
         <div class="setting-contents">
           <div class="setting-content" id="basicSettingsInputs">
@@ -258,8 +290,11 @@
       <div class="a_setting">
         <div class="setting-header">
           <h4 class="setting-name">Scales Presets</h4>
-          <button>Save as JSON</button>
-          <button>Load from JSON</button>
+          <a>Export</a>
+          <div>
+            <label for="">Import</label>
+            <input type="file" id="">
+          </div>
         </div>
         <div class="setting-contents">
           <button id="scalePresetsReset">Reset</button>
