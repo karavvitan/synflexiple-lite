@@ -131,20 +131,20 @@
       }
     }
 
-    #settings-header {
+    #settingsHeader {
       display: flex;
       flex-flow: column wrap;
       background-color: var(--color-primary);
       padding: 0.5rem;
     }
 
-    #settings-heading {
+    #settingsHeading {
       margin: 0;
       padding: 0.25rem;
       text-align: center;
     }
 
-    #settings-header-buttons {
+    #settingsHeaderButtons {
       display: flex;
       flex-flow: row wrap;
       justify-content: space-around;
@@ -193,7 +193,7 @@
       background-color: var(--color-error) !important;
     }
 
-    #settings-dialog {
+    #settingsDialog {
       z-index: 20;
       margin: 0;
       padding: 0;
@@ -219,14 +219,14 @@
       ⚙️
     </button>
   </div>
-  <dialog id="settings-dialog" closedby="any">
+  <dialog id="settingsDialog" closedby="any">
     <button id="settingsDialogClose">
       💾
     </button>
     <div id="settings">
-      <div id="settings-header">
-        <h2 id="settings-heading">Settings<hr></h2>
-        <div id="settings-header-buttons">
+      <div id="settingsHeader">
+        <h2 id="settingsHeading">Settings<hr></h2>
+        <div id="settingsHeaderButtons">
           <button>Save all as JSON</button>
           <button>Load all from JSON</button>
         </div>
@@ -472,7 +472,7 @@
     /// SETTINGS [
 
     // Get elements [
-    const settingsDialog = document.getElementById("settings-dialog");
+    const settingsDialog = document.getElementById("settingsDialog");
     const settingsDialogShow = document.getElementById("settingsDialogShow");
     const settingsDialogClose = document.getElementById("settingsDialogClose");
 
