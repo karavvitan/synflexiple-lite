@@ -624,14 +624,18 @@
       });
     }
 
-    for (const [key, value] of Object.entries(cfg.scalePresets)) {
-      scalePresetInputsGenerate({
-        sDNValue: value.displayName || key,
-        sIDValue: key,
-        tonesValue: value.tones,
-        notationValue: (value.notation !== undefined) ? value.notation : 12,
-      });
+    function scalePresetsInputsUpdate() {
+      for (const [key, value] of Object.entries(cfg.scalePresets)) {
+        scalePresetInputsGenerate({
+          sDNValue: value.displayName || key,
+          sIDValue: key,
+          tonesValue: value.tones,
+          notationValue: (value.notation !== undefined) ? value.notation : 12,
+        });
+      }
     }
+
+    scalePresetsInputsUpdate();
 
     scalePresetsAdd.addEventListener("click", () => {
       let sIDValue = "New_Scale";
