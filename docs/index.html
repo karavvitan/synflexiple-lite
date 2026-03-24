@@ -253,10 +253,10 @@
       <div id="settingsHeader">
         <h2 id="settingsHeading">Settings<hr></h2>
         <div id="settingsHeaderButtons">
-          <a>Export all</a>
+          <a id="exportAll">Export all</a>
           <div>
-            <label for="loadAllFromJson">Import all</label>
-            <input type="file" id="loadAllFromJson">
+            <label for="importAll">Import all</label>
+            <input type="file" id="importAll">
           </div>
         </div>
       </div>
@@ -520,6 +520,9 @@
 
     const scalePresetsReset = document.getElementById("scalePresetsReset");
     const scalePresetsAdd = document.getElementById("scalePresetsAdd");
+
+    const exportAll = document.getElementById("exportAll");
+    const importAll = document.getElementById("importAll");
     // ]
 
     // Dialog show/close buttons [
@@ -657,7 +660,7 @@
     });
     // ]
 
-    // Static Inputs
+    // Static Inputs [
     basicSettingsInputs.addEventListener("change", (e) => {
       const inp = e.target;
       switch (inp) {
@@ -675,6 +678,18 @@
           break;
       }
     });
+    // ]
+
+    // Ex/import configs [
+    exportAll.addEventListener("click", function() {
+      const blob = new Blob([JSON.stringify(cfg, null, 2)], {
+        type: "application/json",
+      });
+      this.href = URL.createObjectURL(blob);
+      this.download = "configs.json";
+      this.click();
+    });
+    // ]
 
     settingsDialog.addEventListener("close", () => {
       renderPad(scaleSelect.value);
