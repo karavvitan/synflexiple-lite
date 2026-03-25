@@ -720,10 +720,19 @@
           } else {
             for (const subkey in cfg[key]) {
               cfg[key][subkey] = obj[key][subkey];
-              localStorage.setItem(`cfg.${key}.${subkey}`, cfg[key][subkey])
+              localStorage.setItem(`cfg.${key}.${subkey}`, cfg[key][subkey]);
             }
           }
         }
+
+        baseFreqInput.value = cfg.baseFreq;
+        baseOctaveInput.value = cfg.baseOctave;
+        numOctavesInput.value = cfg.numOctaves;
+
+        scaleSelect.replaceChildren();
+        scaleOptionsGenerate();
+        scalePresetsAdd.removeNext();
+        scalePresetsInputsUpdate();
       }
 
       reader.readAsText(file);
