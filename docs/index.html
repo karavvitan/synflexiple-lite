@@ -702,6 +702,30 @@
     exportAll.addEventListener("click", function() {
       exportJSON(this, cfg, "all_configs.json");
     });
+
+    importAll.addEventListener("change", function() {
+      const file = this.files[0];
+      const reader = new FileReader();
+      reader.onload = () => {
+        const obj = JSON.parse(reader.result);
+        for (const key in obj) {
+          if (typeof cfg[key] !== "object") {
+            cfg[key] = obj[key];
+            localStorage.setItem(`cfg.${key}`, cfg[key]);
+          } else if (key === "scalePresets") {
+            cfg[key] = obj[key];
+            localStorage.setItem("cfg.scalePresets", JSON.stringify(cfg.scalePresets));
+          } else {
+            for (const subkey in cfg[key]) {
+              cfg[key][subkey] = obj[key][subkey];
+              localStorage.setItem(`cfg.${key}.${subkey}`, cfg[key][subkey])
+            }
+          }
+        }
+      }
+
+      reader.readAsText(file);
+    });
     // ]
 
     settingsDialog.addEventListener("close", () => {
