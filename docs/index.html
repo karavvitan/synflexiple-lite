@@ -687,14 +687,20 @@
     });
     // ]
 
-    // Ex/import configs [
-    exportAll.addEventListener("click", function() {
-      const blob = new Blob([JSON.stringify(cfg, null, 2)], {
+    function exportJSON(btn, obj, filename) {
+      const file = new Blob([JSON.stringify(obj, null, 2)], {
         type: "application/json",
       });
-      this.href = URL.createObjectURL(blob);
-      this.download = "configs.json";
-      this.click();
+      const url = URL.createObjectURL(file);
+      btn.href = url;
+      btn.download = filename || "export.json";
+      btn.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // Ex/import configs [
+    exportAll.addEventListener("click", function() {
+      exportJSON(this, cfg, "all_configs.json");
     });
     // ]
 
