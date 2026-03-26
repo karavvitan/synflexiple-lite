@@ -640,7 +640,7 @@
         scalePresetInputsGenerate({
           sIDValue: key,
           tonesValue: value.tones,
-          notationValue: (value.notation !== undefined) ? value.notation : 12,
+          notationValue: value.notation || 12,
         });
       }
     }
