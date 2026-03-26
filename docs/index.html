@@ -293,6 +293,45 @@
 
       <div class="a_setting">
         <div class="setting-header">
+          <h4 class="setting-name">Synth</h4>
+          <button id="exportSynth">Export</button>
+          <div>
+            <label for="importSynth">Import</label>
+            <input type="file" id="importSynth">
+          </div>
+        </div>
+        <div class="setting-contents">
+          <div class="setting-content" id="synthInputs">
+            <label>
+              Attack:
+              <input type="number" class="reset-input" id="attackInput">
+            </label>
+            <label>
+              Decay:
+              <input type="number" class="reset-input" id="decayInput">
+            </label>
+            <label>
+              Sustain:
+              <input type="number" class="reset-input" id="sustainInput">
+            </label>
+            <label>
+              Release:
+              <input type="number" class="reset-input" id="releaseInput">
+            </label>
+            <label>
+              Oscillation type:
+              <input type="number" class="reset-input" id="oscTypeInput">
+            </label>
+            <label>
+              Filter type:
+              <input type="number" class="reset-input" id="filTypeInput">
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="a_setting">
+        <div class="setting-header">
           <h4 class="setting-name">Scales Presets</h4>
           <button id="exportScalePresets">Export</button>
           <div>
@@ -560,6 +599,14 @@
     const baseFreqInput = document.getElementById("baseFreqInput");
     const baseOctaveInput = document.getElementById("baseOctaveInput");
     const numOctavesInput = document.getElementById("numOctavesInput");
+
+    const synthInputs = document.getElementById("synthInputs");
+    const attackInput = document.getElementById("attackInput");
+    const decayInput = document.getElementById("decayInput");
+    const sustainInput = document.getElementById("sustainInput");
+    const releaseInput = document.getElementById("releaseInput");
+    const oscTypeInput = document.getElementById("oscTypeInput");
+    const filTypeInput = document.getElementById("filTypeInput");
 
     const scalePresetsReset = document.getElementById("scalePresetsReset");
     const scalePresetsAdd = document.getElementById("scalePresetsAdd");
