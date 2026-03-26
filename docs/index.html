@@ -635,9 +635,18 @@
     });
     // ]
 
+    // Static inputs values init [
     baseFreqInput.value = cfg.basics.baseFreq;
     baseOctaveInput.value = cfg.basics.baseOctave;
     numOctavesInput.value = cfg.basics.numOctaves;
+
+    attackInput.value = cfg.synth.attack;
+    decayInput.value = cfg.synth.decay;
+    sustainInput.value = cfg.synth.sustain;
+    releaseInput.value = cfg.synth.release;
+    oscTypeInput.value = cfg.synth.oscType;
+    filTypeInput.value = cfg.synth.filType;
+    //]
 
     // scalePresetInputs [
     function scalePresetInputsGenerate({
