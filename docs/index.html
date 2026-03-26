@@ -734,6 +734,26 @@
 
       reader.readAsText(file);
     });
+
+    exportScalePresets.addEventListener("click", () => {
+      exportJSON(cfg.scalePresets, "scalePresets.json");
+    });
+
+    importScalePresets.addEventListener("change", function() {
+      const file = this.files[0];
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        Object.assign(cfg.scalePresets, JSON.parse(reader.result));
+
+        scaleSelect.replaceChildren();
+        scaleOptionsGenerate();
+        scalePresetsAdd.removeNext();
+        scalePresetsInputsUpdate();
+      };
+
+      reader.readAsText(file);
+    });
     // ]
 
     settingsDialog.addEventListener("close", () => {
