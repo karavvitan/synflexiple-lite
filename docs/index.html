@@ -310,28 +310,28 @@
     const dialogDebug = false;
 
     /// CONFIGS DEFAULTS [
-    const cfg = {}; // cfg stands for "configs"
 
-    // scalePresets
-    cfg.scalePresets = JSON.parse(localStorage.getItem("cfg.scalePresets")) || {
-      Minor: {
-        tones: [0, 2, 3, 5, 7, 8, 10],
+    // cfg stands for "configs"
+    const cfg = JSON.parse(localStorage.getItem("cfg")) || {
+      scalePresets: {
+        "Minor": {
+          tones: [0, 2, 3, 5, 7, 8, 10],
+        },
+        "Minor Ratio": {
+          tones: [1/1, 9/8, 6/5, 4/3, 3/2, 8/5, 9/5],
+          notation: "ratio",
+        },
       },
-      Minor_Ratio: {
-        tones: [1/1, 9/8, 6/5, 4/3, 3/2, 8/5, 9/5],
-        notation: "ratio",
-        displayName: "Minor Ratio",
+
+      baseFreq: 261.63,
+      baseOctave: -1,
+      numOctaves: 4,
+
+      ui: {
+        rowHeight: 120,
       },
     };
 
-    // Basics
-    cfg.baseFreq = parseFloat(localStorage.getItem("cfg.baseFreq")) || 261.63;
-    cfg.baseOctave = (!isNaN(parseInt(localStorage.getItem("cfg.baseOctave")))) ? parseInt(localStorage.getItem("cfg.baseOctave")) : -1;
-    cfg.numOctaves = parseInt(localStorage.getItem("cfg.numOctaves")) || 4;
-
-    // UI
-    cfg.ui = {};
-    cfg.ui.rowHeight = 120;
     document.documentElement.style.setProperty("--rowHeight", cfg.ui.rowHeight + "px");
     /// ]
 
@@ -656,7 +656,6 @@
       scalePresetsAdd.removeNext();
       cfg.scalePresets = {};
       scaleSelect.replaceChildren();
-      localStorage.removeItem("cfg.scalePresets");
     });
     // ]
 
@@ -666,15 +665,12 @@
       switch (inp) {
         case baseFreqInput:
           cfg.baseFreq = parseFloat(inp.value);
-          localStorage.setItem("cfg.baseFreq", cfg.baseFreq);
           break;
         case baseOctaveInput:
           cfg.baseOctave = parseInt(inp.value);
-          localStorage.setItem("cfg.baseOctave", cfg.baseOctave);
           break;
         case numOctavesInput:
           cfg.numOctaves = parseInt(inp.value);
-          localStorage.setItem("cfg.numOctaves", cfg.numOctaves);
           break;
       }
     });
@@ -705,14 +701,11 @@
         for (const [key, val] of Object.entries(JSON.parse(reader.result))) {
           if (typeof val !== "object") {
             cfg[key] = val;
-            localStorage.setItem(`cfg.${key}`, cfg[key]);
           } else if (key === "scalePresets") {
             Object.assign(cfg[key], val);
-            localStorage.setItem("cfg.scalePresets", JSON.stringify(cfg.scalePresets));
           } else {
             for (const subkey in val) {
               cfg[key][subkey] = val[subkey];
-              localStorage.setItem(`cfg.${key}.${subkey}`, cfg[key][subkey]);
             }
           }
         }
@@ -733,7 +726,7 @@
 
     settingsDialog.addEventListener("close", () => {
       renderPad(scaleSelect.value);
-      localStorage.setItem("cfg.scalePresets", JSON.stringify(cfg.scalePresets));
+      localStorage.setItem("cfg", JSON.stringify(cfg));
     });
 
     /// ]
