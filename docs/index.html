@@ -323,9 +323,11 @@
         },
       },
 
-      baseFreq: 261.63,
-      baseOctave: -1,
-      numOctaves: 4,
+      basics: {
+        baseFreq: 261.63,
+        baseOctave: -1,
+        numOctaves: 4,
+      },
 
       ui: {
         rowHeight: 120,
@@ -348,7 +350,7 @@
       const index = Math.floor(x / width * scale.length);
       const safeIndex = Math.max(0, Math.min(index, scale.length - 1));
       const ratio = (ET === "r" || ET === "ratio") ? scale[safeIndex] : Math.pow(2, scale[safeIndex] / ET);
-      const freq = cfg.baseFreq * ratio * Math.pow(2, octaveIndex);
+      const freq = cfg.basics.baseFreq * ratio * Math.pow(2, octaveIndex);
       return { freq: freq, volume: yVolume };
     }
 
@@ -390,7 +392,7 @@
       const overlay = document.createElement("div");
       overlay.className = "noteOverlay";
 
-      for (let o = 0; o < cfg.numOctaves; o++) {
+      for (let o = 0; o < cfg.basics.numOctaves; o++) {
         const octaveRow = document.createElement("div");
         octaveRow.className = "octave-row";
         for (let i = 0; i < scale.length; i++) {
@@ -428,7 +430,7 @@
         const rect = pad.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top + scrollbarZone.scrollTop;
-        const { freq, volume } = getFreqFromXY(x, y, rect.width, cfg.ui.rowHeight * cfg.numOctaves, ET, scale, cfg.baseOctave, cfg.baseOctave + cfg.numOctaves - 1);
+        const { freq, volume } = getFreqFromXY(x, y, rect.width, cfg.ui.rowHeight * cfg.basics.numOctaves, ET, scale, cfg.basics.baseOctave, cfg.basics.baseOctave + cfg.basics.numOctaves - 1);
 
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
@@ -476,14 +478,14 @@
           const rect = pad.getBoundingClientRect();
           const x = e.clientX - rect.left;
           const y = e.clientY - rect.top + scrollbarZone.scrollTop;
-          const { freq, volume } = getFreqFromXY(x, y, rect.width, cfg.ui.rowHeight * cfg.numOctaves, ET, scale, cfg.baseOctave, cfg.baseOctave + cfg.numOctaves - 1);
+          const { freq, volume } = getFreqFromXY(x, y, rect.width, cfg.ui.rowHeight * cfg.basics.numOctaves, ET, scale, cfg.basics.baseOctave, cfg.basics.baseOctave + cfg.basics.numOctaves - 1);
           voice.osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
           voice.gain.gain.setTargetAtTime(volume, audioCtx.currentTime, 0.05);
         }
       });
     }
 
-    scrollbarZone.innerHTML = '<div style="height:' + (cfg.ui.rowHeight * cfg.numOctaves) + 'px;"></div>';
+    scrollbarZone.innerHTML = '<div style="height:' + (cfg.ui.rowHeight * cfg.basics.numOctaves) + 'px;"></div>';
     scrollbarZone.addEventListener("scroll", () => {
       const scrollY = scrollbarZone.scrollTop;
       const overlay = container.querySelector(".noteOverlay");
@@ -548,9 +550,9 @@
       settingsDialog.setAttribute("closedby", "any");
     }
 
-    baseFreqInput.value = cfg.baseFreq;
-    baseOctaveInput.value = cfg.baseOctave;
-    numOctavesInput.value = cfg.numOctaves;
+    baseFreqInput.value = cfg.basics.baseFreq;
+    baseOctaveInput.value = cfg.basics.baseOctave;
+    numOctavesInput.value = cfg.basics.numOctaves;
 
     // scalePresetInputs [
     function scalePresetInputsGenerate({
@@ -664,13 +666,13 @@
       const inp = e.target;
       switch (inp) {
         case baseFreqInput:
-          cfg.baseFreq = parseFloat(inp.value);
+          cfg.basics.baseFreq = parseFloat(inp.value);
           break;
         case baseOctaveInput:
-          cfg.baseOctave = parseInt(inp.value);
+          cfg.basics.baseOctave = parseInt(inp.value);
           break;
         case numOctavesInput:
-          cfg.numOctaves = parseInt(inp.value);
+          cfg.basics.numOctaves = parseInt(inp.value);
           break;
       }
     });
@@ -699,16 +701,12 @@
       const reader = new FileReader();
       reader.onload = () => {
         for (const [key, val] of Object.entries(JSON.parse(reader.result))) {
-          if (typeof val !== "object") {
-            cfg[key] = val;
-          } else {
-            Object.assign(cfg[key], val);
-          }
+          Object.assign(cfg[key], val);
         }
 
-        baseFreqInput.value = cfg.baseFreq;
-        baseOctaveInput.value = cfg.baseOctave;
-        numOctavesInput.value = cfg.numOctaves;
+        baseFreqInput.value = cfg.basics.baseFreq;
+        baseOctaveInput.value = cfg.basics.baseOctave;
+        numOctavesInput.value = cfg.basics.numOctaves;
 
         scaleSelect.replaceChildren();
         scaleOptionsGenerate();
