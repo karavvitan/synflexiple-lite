@@ -275,7 +275,7 @@
           </div>
         </div>
         <div class="setting-contents">
-          <div class="setting-content" id="basicSettingsInputs">
+          <div class="setting-content" id="basicConfigsInputs">
             <label>
               Base frequency:
               <input type="number" class="reset-input" id="baseFreqInput">
@@ -546,7 +546,7 @@
     const settingsDialogShow = document.getElementById("settingsDialogShow");
     const settingsDialogClose = document.getElementById("settingsDialogClose");
 
-    const basicSettingsInputs = document.getElementById("basicSettingsInputs");
+    const basicConfigsInputs = document.getElementById("basicConfigsInputs");
     const baseFreqInput = document.getElementById("baseFreqInput");
     const baseOctaveInput = document.getElementById("baseOctaveInput");
     const numOctavesInput = document.getElementById("numOctavesInput");
@@ -693,7 +693,7 @@
     // ]
 
     // Static Inputs [
-    basicSettingsInputs.addEventListener("change", (e) => {
+    basicConfigsInputs.addEventListener("change", (e) => {
       const inp = e.target;
       switch (inp) {
         case baseFreqInput:
