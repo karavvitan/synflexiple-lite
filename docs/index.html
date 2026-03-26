@@ -399,7 +399,11 @@
           const note = document.createElement("div");
           note.className = "note-zone";
           const tone = scale[i];
-          const hue = (notation === "r" || notation === "ratio") ? tone * 360 : (tone / notation) * 360;
+          const hue =
+            (notation === "r" || notation === "ratio") ?
+              (tone - 1) * 360 :
+              Math.pow(2, (tone / notation)) * 360
+          ;
           note.style.backgroundColor = `hsl(${hue}, 70%, 55%)`;
           note.textContent = +tone.toFixed(3);
           octaveRow.appendChild(note);
