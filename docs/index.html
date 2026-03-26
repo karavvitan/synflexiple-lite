@@ -341,7 +341,7 @@
     const scaleSelect = document.getElementById("scaleSelect");
     const scrollbarZone = document.getElementById("scrollbarZone");
 
-    function getFreqFromXY(x, y, width, height, ET, scale, minOct, maxOct) {
+    function getFreqFromXY(x, y, width, height, notation, scale, minOct, maxOct) {
       const octaveHeight = height / (maxOct - minOct + 1);
       const octaveIndex = maxOct - Math.floor(y / octaveHeight);
       const octaveY = y % octaveHeight;
@@ -349,7 +349,7 @@
 
       const index = Math.floor(x / width * scale.length);
       const safeIndex = Math.max(0, Math.min(index, scale.length - 1));
-      const ratio = (ET === "r" || ET === "ratio") ? scale[safeIndex] : Math.pow(2, scale[safeIndex] / ET);
+      const ratio = (notation === "r" || notation === "ratio") ? scale[safeIndex] : Math.pow(2, scale[safeIndex] / notation);
       const freq = cfg.basics.baseFreq * ratio * Math.pow(2, octaveIndex);
       return { freq: freq, volume: yVolume };
     }
@@ -382,7 +382,7 @@
     }
 
     function renderPad(scaleName) {
-      const ET = (cfg.scalePresets[scaleName].notation !== undefined) ? cfg.scalePresets[scaleName].notation : 12;
+      const notation = cfg.scalePresets[scaleName].notation || 12;
       const scale = cfg.scalePresets[scaleName].tones;
       container.innerHTML = "";
 
@@ -399,7 +399,7 @@
           const note = document.createElement("div");
           note.className = "note-zone";
           const tone = scale[i];
-          const hue = (ET === "r" || ET === "ratio") ? tone * 360 : (tone / ET) * 360;
+          const hue = (notation === "r" || notation === "ratio") ? tone * 360 : (tone / notation) * 360;
           note.style.backgroundColor = `hsl(${hue}, 70%, 55%)`;
           note.textContent = +tone.toFixed(3);
           octaveRow.appendChild(note);
@@ -430,7 +430,14 @@
         const rect = pad.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top + scrollbarZone.scrollTop;
-        const { freq, volume } = getFreqFromXY(x, y, rect.width, cfg.ui.rowHeight * cfg.basics.numOctaves, ET, scale, cfg.basics.baseOctave, cfg.basics.baseOctave + cfg.basics.numOctaves - 1);
+        const { freq, volume } = getFreqFromXY(
+          x, y, rect.width,
+          cfg.ui.rowHeight * cfg.basics.numOctaves,
+          notation,
+          scale,
+          cfg.basics.baseOctave,
+          cfg.basics.baseOctave + cfg.basics.numOctaves - 1,
+        );
 
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
@@ -478,7 +485,14 @@
           const rect = pad.getBoundingClientRect();
           const x = e.clientX - rect.left;
           const y = e.clientY - rect.top + scrollbarZone.scrollTop;
-          const { freq, volume } = getFreqFromXY(x, y, rect.width, cfg.ui.rowHeight * cfg.basics.numOctaves, ET, scale, cfg.basics.baseOctave, cfg.basics.baseOctave + cfg.basics.numOctaves - 1);
+          const { freq, volume } = getFreqFromXY(
+            x, y, rect.width,
+            cfg.ui.rowHeight * cfg.basics.numOctaves,
+            notation,
+            scale,
+            cfg.basics.baseOctave,
+            cfg.basics.baseOctave + cfg.basics.numOctaves - 1,
+          );
           voice.osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
           voice.gain.gain.setTargetAtTime(volume, audioCtx.currentTime, 0.05);
         }
