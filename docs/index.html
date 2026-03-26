@@ -701,12 +701,8 @@
         for (const [key, val] of Object.entries(JSON.parse(reader.result))) {
           if (typeof val !== "object") {
             cfg[key] = val;
-          } else if (key === "scalePresets") {
-            Object.assign(cfg[key], val);
           } else {
-            for (const subkey in val) {
-              cfg[key][subkey] = val[subkey];
-            }
+            Object.assign(cfg[key], val);
           }
         }
 
