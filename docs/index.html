@@ -602,7 +602,7 @@
 
       const tones = document.createElement("label");
       const tonesInput = document.createElement("input");
-      tonesInput.value = tonesValue;
+      tonesInput.value = tonesValue.map((e) => +e.toFixed(3)).join(", ");
       tonesInput.className = "reset-input";
       tones.append("The tones list:", tonesInput);
 
