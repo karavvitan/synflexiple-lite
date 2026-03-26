@@ -495,10 +495,10 @@
     });
 
     function scaleOptionsGenerate() {
-      for (const [key, value] of Object.entries(cfg.scalePresets)) {
+      for (const key in cfg.scalePresets) {
         const option = document.createElement("option");
         option.value = key;
-        option.textContent = value.displayName || key;
+        option.textContent = key;
         scaleSelect.append(option);
       }
     }
@@ -554,26 +554,20 @@
 
     // scalePresetInputs [
     function scalePresetInputsGenerate({
-      sDNValue = "",
       sIDValue = "",
       tonesValue = "",
       notationValue = "",
     }) {
       let sPKey = sIDValue;
-      const scaleOption = document.querySelector(`#scaleSelect > option[value=${sPKey}]`);
+      const scaleOption = document.querySelector(`#scaleSelect > option[value="${sPKey}"]`);
 
       const scalePresetInputs = document.createElement("div");
       scalePresetInputs.className = "setting-content";
 
-      const sDN = document.createElement("label");
-      const sDNInput = document.createElement("input");
-      sDNInput.value = sDNValue;
-      sDN.append("Display Name of the Scale:", sDNInput);
-
       const sID = document.createElement("label");
       const sIDInput = document.createElement("input");
       sIDInput.value = sIDValue;
-      sID.append("Identifier for the scale (must be unique):", sIDInput);
+      sID.append("Scale name (must be unique):", sIDInput);
 
       const tones = document.createElement("label");
       const tonesInput = document.createElement("input");
@@ -594,21 +588,18 @@
         scaleOption.remove();
       });
 
-      scalePresetInputs.append(sID, sDN, tones, notation, deleteBtn);
+      scalePresetInputs.append(sID, tones, notation, deleteBtn);
       scalePresetsAdd.after(scalePresetInputs);
 
       scalePresetInputs.addEventListener("change", (e) => {
         const inp = e.target;
         switch (inp) {
-          case sDNInput:
-            cfg.scalePresets[sPKey].displayName = inp.value;
-            scaleOption.textContent = inp.value;
-            break;
           case sIDInput:
             if (!cfg.scalePresets[inp.value]) {
               cfg.scalePresets[inp.value] = cfg.scalePresets[sPKey];
               delete cfg.scalePresets[sPKey];
               scaleOption.value = inp.value;
+              scaleOption.textContent = inp.value;
               sPKey = inp.value;
             } else {
               inp.value = sPKey;
@@ -631,7 +622,6 @@
     function scalePresetsInputsUpdate() {
       for (const [key, value] of Object.entries(cfg.scalePresets)) {
         scalePresetInputsGenerate({
-          sDNValue: value.displayName || key,
           sIDValue: key,
           tonesValue: value.tones,
           notationValue: (value.notation !== undefined) ? value.notation : 12,
@@ -642,17 +632,16 @@
     scalePresetsInputsUpdate();
 
     scalePresetsAdd.addEventListener("click", () => {
-      let sIDValue = "New_Scale";
+      let sIDValue = "New Scale";
       while (cfg.scalePresets[sIDValue]) {
         sIDValue += "_";
       }
       cfg.scalePresets[sIDValue] = {};
       const option = document.createElement("option");
       option.value = sIDValue;
-      option.textContent = "New Scale";
+      option.textContent = sIDValue;
       scaleSelect.append(option);
       scalePresetInputsGenerate({
-        sDNValue: option.textContent,
         sIDValue,
       });
     });
