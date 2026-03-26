@@ -858,6 +858,22 @@
       reader.readAsText(file);
     });
 
+    exportSynth.addEventListener("click", () => {
+      exportJSON(cfg.synth, "synth_configs.json");
+    });
+
+    importSynth.addEventListener("change", function() {
+      const file = this.files[0];
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        Object.assign(cfg.synth, JSON.parse(reader.result));
+        synthInputsUpdate();
+      };
+
+      reader.readAsText(file);
+    });
+
     exportScalePresets.addEventListener("click", () => {
       exportJSON(cfg.scalePresets, "scalePresets.json");
     });
