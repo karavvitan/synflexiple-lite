@@ -7,3 +7,8 @@ Look at [Sincrediple](https://github.com/karavvitan/Sincrediple) repository for 
 [Try it!](https://karavvitan.github.io/synflexiple/index.html)
 
 The code is in `/docs` folder (named so for easy gh-pages deploying).
+
+The main difference from `Sincrediple` is the addition of settings UI.
+And that's it.
+I have no plans for further development on this specific repo, except for bug fixes, refactoring, etc.
+If you want to develop more, just develop it as a separate repo (which I plan to do myself later).
