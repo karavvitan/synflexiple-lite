@@ -574,6 +574,7 @@
 
     scaleSelect.addEventListener("change", () => {
       renderPad(scaleSelect.value);
+      localStorage.setItem("scaleSelect.value", scaleSelect.value);
     });
 
     function scaleOptionsGenerate() {
@@ -586,8 +587,8 @@
     }
 
     scaleOptionsGenerate();
-    renderPad(scaleSelect.options[0].value);
-    if (scaleSelect.value) renderPad(scaleSelect.value || scaleSelect.options[0].value);
+    scaleSelect.value = localStorage.getItem("scaleSelect.value") || scaleSelect.options[0].value;
+    if (scaleSelect.value) renderPad(scaleSelect.value);
 
     /// SETTINGS [
 
